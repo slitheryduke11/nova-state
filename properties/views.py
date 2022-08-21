@@ -1,8 +1,10 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from local_modules.easybroker_conn import EasyBrokerConnection
+
 
 
 def get_property(request, property_id):
@@ -10,7 +12,9 @@ def get_property(request, property_id):
 	easybroker_conn = EasyBrokerConnection()
 	prop = easybroker_conn.get_property(property_id)
 
-	successful_connection = (easybroker_conn.status_code == 200)
+	# Property not found or no longer available
+	if easybroker_conn.status_code != 200:
+		return redirect('index')
 
 	return render(request, 'properties/property.html', {
 		'property': prop
@@ -26,6 +30,9 @@ def post_contact(request, property_id):
 		message=request.POST['message'], source='novastate.com'
 	)
 
-	successful_connection = (easybroker_conn.status_code == 200)
+	if easybroker_conn.status_code == 200:
+		messages.success(request, "Lead created successfully.")
+	else: # Property not found or no longer available
+		messages.error(request, "Could not create lead.")
 
-	return HttpResponseRedirect(reverse('properties:get_property', args=(property_id, )))
+	return redirect('properties:get_property', property_id=property_id)

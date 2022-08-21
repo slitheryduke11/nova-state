@@ -1,4 +1,5 @@
 import json
+
 import requests
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -6,6 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from local_modules.easybroker_conn import EasyBrokerConnection
+
 
 
 def index(request):
