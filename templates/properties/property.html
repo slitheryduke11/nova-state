@@ -1,0 +1,117 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ property.public_id }}{% endblock %}
+
+{% load static %}
+
+{% block body %}
+
+	<!-- Navigation
+		---------------------------------------------->
+
+		{% include "properties/nav.html" %}
+
+	<!-- Header
+		---------------------------------------------->
+
+	<header id="header">
+		<a href="{{ property.property_images.0.url }}">
+			<div class="intro" style="background: url({{ property.property_images.0.url }}) center center no-repeat">
+				<div class="overlay">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8 col-md-offset-2 intro-text">
+								<h1>{{ property.title }}</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</a>
+	</header>
+
+	<!-- Home Section
+		---------------------------------------------->
+
+	<div id="property-home">
+		<div class="container">
+				<div class="home-text">
+					<h2>{{ property.public_id }}</h2>
+					<h5>{{ property.property_type }}</h5>
+					<h3>{{ property.location.name}}</h3>
+					<p>{{ property.description }}</p>
+				</div>
+		</div>
+	</div>
+
+	<!-- Gallery Section
+		---------------------------------------------->
+
+	<div id="gallery">
+		<div class="container">
+			<div class="section-title">
+				<h2>Gallery</h2>
+			</div>
+			<div class="row">
+				<div class="gallery-items">
+					{% for img in property.property_images %}
+						<div class="col-sm-6 col-md-4 col-lg-4">
+							<div class="gallery-item">
+								<div class="hover-bg">
+									<a href="{{ img.url }}" title="Project Title" data-lightbox-gallery="gallery1">
+										<div class="hover-text">
+											<h4>{{ img.title }}</h4>
+										</div>
+										<img src="{{ img.url }}" class="img-responsive" alt="Project Title">
+									</a>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Contact Section
+		---------------------------------------------->
+	
+	<div id="new_lead">
+		<div class="container">
+			<div class="section-title">
+				<h2>New Lead</h2>
+				<p>Fill out the form below to create a new lead for the property</p>
+			</div>
+			<div class="form-group">
+				<form action="{% url 'properties:post_contact' property.public_id %}" method="post">
+					{% csrf_token %}
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<input name="name" type="text" id="name" class="form-control" placeholder="Name" required="required">
+								<p class="help-block text-danger"></p>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input name="phone" type="tel" id="phone" class="form-control" placeholder="Phone" required="required">
+								<p class="help-block text-danger"></p>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<input name="email" type="email" id="email" class="form-control" placeholder="Email" required="required">
+						<p class="help-block text-danger"></p>
+					</div>
+					<div class="form-group">
+						<textarea name="message" id="message" class="form-control" rows="4" placeholder="Message" required></textarea>
+						<p class="help-block text-danger"></p>
+					</div>
+					<div id="success"></div>
+					<button type="submit" class="btn btn-custom btn-lg">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

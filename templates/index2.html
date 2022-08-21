@@ -1,0 +1,115 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ property.public_id }}{% endblock %}
+
+{% load static %}
+
+{% block body %}
+
+  <!-- Navigation
+    ---------------------------------------------->
+
+    {% include "properties/nav.html" %}
+
+  <!-- Header
+    ---------------------------------------------->
+
+  <header id="header">
+    <a href="{{ property.property_images.0.url }}">
+      <div class="intro" style="background: url({{ property.property_images.0.url }}) center center no-repeat">
+        <div class="overlay">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2 intro-text">
+                <h1>Home Management<br>
+                & Sales</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </header>
+
+  {{ property }}
+
+  <!-- Home Section
+    ---------------------------------------------->
+
+  <div id="home">
+    <div class="container">
+      <div class="row">
+
+
+          <div class="home-text">
+            <h2>Who We Are</h2>
+            <p>We have the best-trained people in the industry, motivated to provide excellent customer service, offering objective, quality, and well-detailed advice on the entire process of buying and selling real estate.</p>
+            <h3>Why Choose Us?</h3>
+            <div class="list-style">
+              <div class="col-lg-6 col-sm-6 col-xs-12">
+                <ul>
+                  <li>Years of Experience</li>
+                  <li>Fully Insured</li>
+                  <li>Cost Control Experts</li>
+                  <li>100% Satisfaction Guarantee</li>
+                </ul>
+              </div>
+              <div class="col-lg-6 col-sm-6 col-xs-12">
+                <ul>
+                  <li>Free Consultation</li>
+                  <li>Satisfied Customers</li>
+                  <li>Project Management</li>
+                  <li>Affordable Pricing</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  
+<div class="container">
+  <ul class="list-group">
+  <li class="list-group-item"><h3>{{ property.title }}</h3></li>
+  <li class="list-group-item"><h5>{{ property.property_type }}</h5></li>
+  <li class="list-group-item">Morbi leo risus</li>
+  <li class="list-group-item">Porta ac consectetur ac</li>
+  <li class="list-group-item">Vestibulum at eros</li>
+</ul>
+</div>
+
+  </div>
+
+  <!-- Gallery Section -->
+  <div id="portfolio">
+    <div class="container">
+      <div class="section-title">
+        <h2>Gallery</h2>
+      </div>
+      <div class="row">
+        <div class="portfolio-items">
+          {% for img in property.property_images %}
+            <div class="col-sm-6 col-md-4 col-lg-4">
+              <div class="portfolio-item">
+                <div class="hover-bg">
+                  <a href="{{ img.url }}" title="Project Title" data-lightbox-gallery="gallery1">
+                    <div class="hover-text">
+                      <h4>{{ img.title }}</h4>
+                    </div>
+                    <img src="{{ img.url }}" class="img-responsive" alt="Project Title">
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

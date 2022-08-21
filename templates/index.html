@@ -1,0 +1,216 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% load static %}
+
+{% block body %}
+
+	<!-- Navigation
+		---------------------------------------------->
+
+		{% include "nav.html" %}
+
+	<!-- Header
+		---------------------------------------------->
+
+	<header id="header">
+		<div class="intro" style="background: url({% static 'img/intro-bg.jpg' %}) center center no-repeat">
+			<div class="overlay">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 intro-text">
+							<h1>Home Management<br>
+							& Sales</h1>
+							<p>We are Nova Estate, a company specializing in property purchase and rental management, driven by providing the best advice to clients on the technical conditions of their processes and operations.</p>
+							<a href="#home" class="btn btn-custom btn-lg page-scroll">Learn More</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Get Touch Section
+		---------------------------------------------->
+
+	<div id="get-touch">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-6 col-md-offset-1">
+					<h3>Cost for your home renovation project</h3>
+					<p>Get started today and complete our form to request your free estimate</p>
+				</div>
+				<div class="col-xs-12 col-md-4 text-center"><a href="#contact" class="btn btn-custom btn-lg page-scroll">Free Estimate</a></div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Home Section
+		---------------------------------------------->
+
+	<div id="home">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-6"><img src="{% static 'img/about.jpg' %}" class="img-responsive" alt=""></div>
+				<div class="col-xs-12 col-md-6">
+					<div class="home-text">
+						<h2>Who We Are</h2>
+						<p>We have the best-trained people in the industry, motivated to provide excellent customer service, offering objective, quality, and well-detailed advice on the entire process of buying and selling real estate.</p>
+						<h3>Why Choose Us?</h3>
+						<div class="list-style">
+							<div class="col-lg-6 col-sm-6 col-xs-12">
+								<ul>
+									<li>Years of Experience</li>
+									<li>Fully Insured</li>
+									<li>Cost Control Experts</li>
+									<li>100% Satisfaction Guarantee</li>
+								</ul>
+							</div>
+							<div class="col-lg-6 col-sm-6 col-xs-12">
+								<ul>
+									<li>Free Consultation</li>
+									<li>Satisfied Customers</li>
+									<li>Project Management</li>
+									<li>Affordable Pricing</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Properties Section
+		---------------------------------------------->
+
+	<div id="properties">
+		<div class="container">
+			<div class="section-title">
+				<h2>Properties</h2>
+			</div>
+
+
+			<!--
+			{'public_id': 'EB-C6667', 'title': 'DEPARTAMENTO EN RENTA EN BOSQUES DEL VALLE EN SAN PEDRO GARZA GARCIA', 'title_image_full': None, 'title_image_thumb': None, 'location': 'Zona Bosques del Valle, San Pedro Garza García, Nuevo León', 'operations': [{'type': 'rental', 'amount': 110000.0, 'currency': 'MXN', 'formatted_amount': '$110,000', 'commission': {'type': 'percentage'}, 'unit': 'total'}], 'bedrooms': 3, 'bathrooms': None, 'parking_spaces': 4, 'property_type': 'Departamento', 'lot_size': 0.0, 'construction_size': 538.0, 'updated_at': '2022-08-07T14:25:34-05:00', 'agent': None, 'show_prices': True, 'share_commission': False},
+
+			{'public_id': 'EB-C6550', 'title': 'CASA EN RENTA EN FUENTES DEL VALLE EN SAN PEDRO GARZA GARCÍA', 'title_image_full': 'https://assets.stagingeb.com/property_images/36550/127846/EB-C6550.jpg?version=1611968798', 'title_image_thumb': 'https://assets.stagingeb.com/property_images/36550/127846/EB-C6550_thumb.jpg?version=1611968798', 'location': 'Fuentes del Valle, San Pedro Garza García, Nuevo León', 'operations': [{'type': 'rental', 'amount': 39000.0, 'currency': 'MXN', 'formatted_amount': '$39,000', 'commission': {'type': 'percentage'}, 'unit': 'total'}], 'bedrooms': 3, 'bathrooms': 1, 'parking_spaces': 2, 'property_type': 'Casa', 'lot_size': 250.0, 'construction_size': 450.0, 'updated_at': '2022-08-07T14:25:35-05:00', 'agent': None, 'show_prices': True, 'share_commission': False},
+
+
+			-->
+
+			<div class="row">
+				{% for property in properties %}
+					<div class="col-md-4 property-container">
+						<a href="{% url 'properties:get_property' property.public_id %}">
+							<div class="propertie-media"><img class="hover-bg" src="{{ property.title_image_thumb }}" alt=""></div>
+							<div class="propertie-desc">
+								<h5>{{ property.public_id }}</h5>
+								<h3>{{ property.title }}</h3>
+								<p>{{ property.property_type }} - {{ property.location }}</p>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+
+			{% if properties.has_other_pages %}
+				<div class="text-center">
+					<ul class="pagination pagination-sm">
+
+						{% if properties.has_previous %}
+							<li><a href="?page={{ properties.previous_page_number }}#properties">Previous</a></li>
+						{% else %}
+							<li class="disabled"><span>Previous</span></li>
+						{% endif %}
+
+						{% for i in properties.paginator.page_range %}
+							{% if properties.number == i %}
+								<li class="list-inline active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+							{% else %}
+								<li class="list-inline"><a href="?page={{ i }}#properties">{{ i }}</a></li>
+							{% endif %}
+						{% endfor %}
+
+						{% if properties.has_next %}
+							<li><a href="?page={{ properties.next_page_number }}#properties">Next</a></li>
+						{% else %}
+							<li class="disabled"><span>Next</span></li>
+						{% endif %}
+
+					</ul>
+				</div>
+			{% endif %}
+
+		</div>
+	</div>
+
+
+
+	<!-- Contact Section
+		---------------------------------------------->
+
+	<!--
+	<div id="contact">
+	<div class="container">
+	<div class="col-md-8">
+	<div class="row">
+	<div class="section-title">
+	<h2>Get In Touch</h2>
+	<p>Please fill out the form below to send us an email and we will get back to you as soon as possible.</p>
+	</div>
+	<form name="sentMessage" id="contactForm" novalidate>
+	<div class="row">
+	<div class="col-md-6">
+	<div class="form-group">
+	<input type="text" id="name" class="form-control" placeholder="Name" required="required">
+	<p class="help-block text-danger"></p>
+	</div>
+	</div>
+	<div class="col-md-6">
+	<div class="form-group">
+	<input type="email" id="email" class="form-control" placeholder="Email" required="required">
+	<p class="help-block text-danger"></p>
+	</div>
+	</div>
+	</div>
+	<div class="form-group">
+	<textarea name="message" id="message" class="form-control" rows="4" placeholder="Message" required></textarea>
+	<p class="help-block text-danger"></p>
+	</div>
+	<div id="success"></div>
+	<button type="submit" class="btn btn-custom btn-lg">Send Message</button>
+	</form>
+	</div>
+	</div>
+	<div class="col-md-3 col-md-offset-1 contact-info">
+	<div class="contact-item">
+	<h4>Contact Info</h4>
+	<p><span>Address</span>4321 California St,<br>
+	San Francisco, CA 12345</p>
+	</div>
+	<div class="contact-item">
+	<p><span>Phone</span> +1 123 456 1234</p>
+	</div>
+	<div class="contact-item">
+	<p><span>Email</span> info@company.com</p>
+	</div>
+	</div>
+	<div class="col-md-12">
+	<div class="row">
+	<div class="social">
+	<ul>
+	<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+	<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+	<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+	<li><a href="#"><i class="fa fa-youtube"></i></a></li>
+	</ul>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	-->
+
+{% endblock %}
